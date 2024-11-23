@@ -6,8 +6,54 @@ package arbolgfamilias;
 
 /**
  *
- * @author dugla
+ * @author ffust
  */
 public class NodoListaSimple {
+    
+    private NodoListaSimple pNext; 
+    private String nombrehijo;
+    
+    
+
+    public NodoListaSimple(String nombrehijo) {
+        this.nombrehijo = nombrehijo;
+        this.pNext = null;
+    }
+    
+   
+
+    /**
+     * @return the pNext
+     */
+    public NodoListaSimple getpNext() {
+        return pNext;
+    }
+
+    /**
+     * @param pNext the pNext to set
+     */
+    public void setpNext(NodoListaSimple pNext) {
+        this.pNext = pNext;
+    }
+
+    /**
+     * @return the nombrehijo
+     */
+    public String getNombrehijo() {
+        return nombrehijo;
+    }
+
+    /**
+     * @param nombrehijo the nombrehijo to set
+     */
+    public void setNombrehijo(String nombrehijo) {
+        this.nombrehijo = nombrehijo;
+    }
+
+    /**
+     * @return the nodito
+     */
+
+    
     
 }

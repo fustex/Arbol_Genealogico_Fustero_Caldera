@@ -69,6 +69,20 @@ public class ListaSimple {
     
 }
     
+    
+    public void agregar1(MiembroFamilia miembro) {
+        NodoListaSimple nuevoNodo = new NodoListaSimple(miembro.getNombre() + " " + miembro.getSobrenombre());
+        if (head == null) {
+            head = nuevoNodo;
+        } else {
+            NodoListaSimple temp = head;
+            while (temp.getpNext() != null) {
+                temp = temp.getpNext();
+            }
+            temp.pNext = nuevoNodo;
+        }
+    }
+    
     public void imprimir() {
         if (head == null) {
             System.out.println("La lista está vacía.");

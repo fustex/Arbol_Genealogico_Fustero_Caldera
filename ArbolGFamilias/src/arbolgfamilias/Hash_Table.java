@@ -10,7 +10,7 @@ package arbolgfamilias;
  */
 public class Hash_Table {
     
-    private static final int CAPACIDAD_INICIAL = 37; // Un número primo
+    private static final int CAPACIDAD_INICIAL = 37; 
     private static final double FACTOR_CARGA_MAXIMO = 0.7;
     private Nodo_hash[] tabla;
     private int numElementos;
@@ -19,15 +19,17 @@ public class Hash_Table {
         this.tabla = new Nodo_hash[CAPACIDAD_INICIAL];
         this.numElementos = 0;
     }
+    
+    
 
     public MiembroFamilia buscar(String key) {
         int posicion = hashing(key);
-        while (this.tabla[posicion] != null) {
-            if (this.tabla[posicion].getName().equals(key)) {
+        while (this.getTabla()[posicion] != null) {
+            if (this.getTabla()[posicion].getName().equals(key)) {
                 System.out.println("encontrado");
-                return this.tabla[posicion].getMiembro();
+                return this.getTabla()[posicion].getMiembro();
             }
-            posicion = (posicion + 1) % this.tabla.length; // Direccionamiento abierto
+            posicion = (posicion + 1) % this.getTabla().length; 
         }
         return null;
     }
@@ -38,14 +40,14 @@ public class Hash_Table {
         }
 
         int posicion = hashing(key);
-        while (this.tabla[posicion] != null) {
-            if (this.tabla[posicion].getName().equals(key)) {
-                this.tabla[posicion].setMiembro(miembro); // Actualizar si ya existe
+        while (this.getTabla()[posicion] != null) {
+            if (this.getTabla()[posicion].getName().equals(key)) {
+                this.getTabla()[posicion].setMiembro(miembro); 
                 return;
             }
-            posicion = (posicion + 1) % this.tabla.length;
+            posicion = (posicion + 1) % this.getTabla().length;
         }
-        this.tabla[posicion] = new Nodo_hash(key, miembro);
+        this.getTabla()[posicion] = new Nodo_hash(key, miembro);
         numElementos++;
     }
 
@@ -55,16 +57,16 @@ public class Hash_Table {
         for (int i = 0; i < llave.length(); i++) {
             hash = primo * hash + llave.charAt(i);
         }
-        return Math.abs(hash) % this.tabla.length;
+        return Math.abs(hash) % this.getTabla().length;
     }
 
     private double factorDeCarga() {
-        return (double) this.numElementos / this.tabla.length;
+        return (double) this.numElementos / this.getTabla().length;
     }
 
     private void redimensionar() {
-        Nodo_hash[] tablaAntigua = this.tabla;
-        this.tabla = new Nodo_hash[siguientePrimo(this.tabla.length * 2)];
+        Nodo_hash[] tablaAntigua = this.getTabla();
+        this.setTabla(new Nodo_hash[siguientePrimo(this.getTabla().length * 2)]);
         this.numElementos = 0;
 
         for (Nodo_hash nodo : tablaAntigua) {
@@ -92,13 +94,27 @@ public class Hash_Table {
     }
     
     public void imprimir() {
-    for (int i = 0; i < this.tabla.length; i++) {
-        Nodo_hash temp = this.tabla[i];
+    for (int i = 0; i < this.getTabla().length; i++) {
+        Nodo_hash temp = this.getTabla()[i];
         while (temp != null) {
             System.out.println("Key: " + temp.getMiembro().getNombre() + " " + temp.getMiembro().getSobrenombre() + ", Value: " + temp.getMiembro());
             temp = temp.getNext();
         }
     }
 }
+
+    /**
+     * @return the tabla
+     */
+    public Nodo_hash[] getTabla() {
+        return tabla;
+    }
+
+    /**
+     * @param tabla the tabla to set
+     */
+    public void setTabla(Nodo_hash[] tabla) {
+        this.tabla = tabla;
+    }
     
 }

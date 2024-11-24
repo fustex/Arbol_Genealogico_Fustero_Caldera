@@ -10,7 +10,7 @@ package arbolgfamilias;
  */
 public class NodoListaSimple {
     
-    private NodoListaSimple pNext; 
+    public NodoListaSimple pNext; 
     private String nombrehijo;
     
     

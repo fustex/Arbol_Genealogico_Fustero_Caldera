@@ -5,55 +5,65 @@
 package arbolgfamilias;
 
 /**
- *
- * @author ffust
+ * Clase que representa un nodo en una lista simple enlazada.
+ * Cada nodo contiene un nombre de hijo y un puntero al siguiente nodo.
+ * 
+ * @author Francisco Fustero
  */
 public class NodoListaSimple {
     
-    private NodoListaSimple pNext; 
-    private String nombrehijo;
-    
-    
+    public NodoListaSimple pNext; 
+    private String nombrehijo; 
 
+    /**
+     * Constructor de la clase NodoListaSimple.
+     * Inicializa el nodo con el nombre del hijo y establece el puntero siguiente como null.
+     * 
+     * @param nombrehijo el nombre del hijo.
+     * @author Francisco Fustero
+     */
     public NodoListaSimple(String nombrehijo) {
         this.nombrehijo = nombrehijo;
         this.pNext = null;
     }
-    
-   
 
     /**
-     * @return the pNext
+     * Obtiene el puntero al siguiente nodo.
+     * 
+     * @return el siguiente nodo.
+     * @author Francisco Fustero
      */
     public NodoListaSimple getpNext() {
         return pNext;
     }
 
     /**
-     * @param pNext the pNext to set
+     * Establece el puntero al siguiente nodo.
+     * 
+     * @param pNext el nuevo nodo siguiente.
+     * @author Francisco Fustero
      */
     public void setpNext(NodoListaSimple pNext) {
         this.pNext = pNext;
     }
 
     /**
-     * @return the nombrehijo
+     * Obtiene el nombre del hijo.
+     * 
+     * @return el nombre del hijo.
+     * @author Francisco Fustero
      */
     public String getNombrehijo() {
         return nombrehijo;
     }
 
     /**
-     * @param nombrehijo the nombrehijo to set
+     * Establece el nombre del hijo.
+     * 
+     * @param nombrehijo el nuevo nombre del hijo.
+     * @author Francisco Fustero
      */
     public void setNombrehijo(String nombrehijo) {
         this.nombrehijo = nombrehijo;
     }
-
-    /**
-     * @return the nodito
-     */
-
-    
-    
 }

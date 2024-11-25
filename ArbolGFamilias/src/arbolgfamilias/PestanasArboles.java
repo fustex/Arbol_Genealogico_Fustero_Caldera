@@ -8,8 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
- *
- * @author dugla
+ * Esta clase representa una interfaz gráfica para gestionar y mostrar un árbol genealógico.
+ * Permite buscar miembros por nombre o título y visualizar sus descendencias y antepasados.
+ * 
+ * @author Anthony Caldera
  */
 public class PestanasArboles extends javax.swing.JFrame {
     
@@ -21,7 +23,9 @@ public class PestanasArboles extends javax.swing.JFrame {
     
 
     /**
-     * Creates new form PestanasArboles
+     * Crea una nueva instancia de PestanasArboles y inicializa los componentes de la interfaz.
+     * 
+     * @author Anthony Caldera
      */
     public PestanasArboles() {
 
@@ -31,22 +35,36 @@ public class PestanasArboles extends javax.swing.JFrame {
         cargarArbol();
         llenarCajitaMiembros();
         familyTree.llenarComboBox(GeneracionLista);
-        jButton2.setEnabled(false);
+        
 
     }
     
     Tree elnuevoarbol = new Tree();
     
+    
+     /**
+     * Clase interna que maneja la genealogía y permite seleccionar un miembro de la familia.
+     */
     public class Genealogia {
     
-           private Hash_Table hashTable;
-
-    public Genealogia(Hash_Table hashTable) {
+        private Hash_Table hashTable;
+        
+        /**
+         * Constructor que inicializa la clase Genealogia con una tabla hash.
+         * 
+         * @param hashTable la tabla hash que contiene los miembros de la familia.
+         * @author Anthony Caldera
+         */
+        public Genealogia(Hash_Table hashTable) {
         this.hashTable = hashTable;
-    }
+        }
     
     
-
+    /**
+     * Permite seleccionar un miembro de la familia mediante un cuadro de diálogo.
+     * 
+     * @author Anthony Caldera
+     */
     public void seleccionarMiembro() {
         String nombreBuscado = JOptionPane.showInputDialog("Ingrese el nombre del miembro de la familia (Nombre y Apellido). Ejemplo, William Baratheon ú Aerys Targaryen: ");
 
@@ -106,26 +124,39 @@ public class PestanasArboles extends javax.swing.JFrame {
             elnuevoarbol = familyTree.crearArbolDescendencia(familyTree, Guardar_miembro);
             llenarCajitaMiembrosDescendencias();
             cargarArbol2();
-            jButton2.setEnabled(true);
+            
         }
     }
-
-    private String obtenerSufijo(int numero) {
-        switch (numero) {
-            case 1: return "1";
-            case 2: return "2";
-            case 3: return "3";
-            case 4: return "4";
-            case 5: return "5";
-            case 6: return "6";
-            case 7: return "7";
-            default: return numero + "th"; 
+    
+        /**
+         * Devuelve el sufijo correspondiente a un número.
+         * 
+         * @param numero el número al que se le quiere obtener el sufijo.
+         * @return el sufijo correspondiente.
+         */
+        private String obtenerSufijo(int numero) {
+            switch (numero) {
+                case 1: return "1";
+                case 2: return "2";
+                case 3: return "3";
+                case 4: return "4";
+                case 5: return "5";
+                case 6: return "6";
+                case 7: return "7";
+                default: return numero + "th"; 
+            }
         }
-    }
 
 
 
     }
+    
+    /**
+     * Busca miembros de la familia por título y muestra los resultados.
+     * 
+     * @param tituloBuscado el título que se desea buscar.
+     * @author Anthony Caldera
+     */
     
     public void buscarPorTitulo(String tituloBuscado) {
     StringBuilder opciones = new StringBuilder();
@@ -183,7 +214,11 @@ public class PestanasArboles extends javax.swing.JFrame {
     }
 }
     
-    
+    /**
+     * Carga y muestra el árbol genealógico en el panel correspondiente.
+     * 
+     * @author Anthony Caldera
+     */
     private void cargarArbol() {
         if (familyTree != null) {
             familyTree.mostrarArbol(MostrarArbolPanel);
@@ -191,6 +226,12 @@ public class PestanasArboles extends javax.swing.JFrame {
             System.out.println("No se encontró ningún árbol.");
         }
     }
+    
+    /**
+     * Carga y muestra el árbol de descendencias en el panel correspondiente.
+     * 
+     * @author Anthony Caldera
+     */
     
     private void cargarArbol2() {
         if (elnuevoarbol != null) {
@@ -200,6 +241,11 @@ public class PestanasArboles extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Llena la lista de miembros en el panel correspondiente.
+     * 
+     * @author Anthony Caldera
+     */
     private void llenarCajitaMiembros() {
     if (familyTree != null && familyTree.getRaiz() != null) {
         recorrerYAgregar(familyTree.getRaiz()); 
@@ -208,6 +254,12 @@ public class PestanasArboles extends javax.swing.JFrame {
     }
 }
 
+    /**
+     * Recorre el árbol y agrega los miembros a la lista.
+     * 
+     * @param nodo el nodo actual a procesar.
+     * @author Anthony Caldera
+     */
     private void recorrerYAgregar(Nodo nodo) {
         if (nodo == null) {
             return; 
@@ -216,7 +268,8 @@ public class PestanasArboles extends javax.swing.JFrame {
         
         MiembroFamilia miembro = nodo.getMiembro();
         String item = miembro.getNombre() + " " + miembro.getSobrenombre();
-        CajitaMiembros.addItem(item);
+        
+        CajitaparaPasados.addItem(item);
         
 
         
@@ -227,8 +280,13 @@ public class PestanasArboles extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Llena la lista de miembros de las descendencias.
+     * 
+     * @author Anthony Caldera
+     */
     private void llenarCajitaMiembrosDescendencias() {
-        CajitaDescendencias.removeAllItems();
+        
     if (elnuevoarbol != null && elnuevoarbol.getRaiz() != null) {
         recorrerYAgregar2(elnuevoarbol.getRaiz()); 
     } else {
@@ -236,6 +294,12 @@ public class PestanasArboles extends javax.swing.JFrame {
     }
 }
     
+    /**
+     * Recorre el árbol de descendencias y agrega los miembros a la lista.
+     * 
+     * @param nodo el nodo actual a procesar.
+     * @author Anthony Caldera
+     */
     private void recorrerYAgregar2(Nodo nodo) {
         if (nodo == null) {
             return; 
@@ -244,7 +308,7 @@ public class PestanasArboles extends javax.swing.JFrame {
         
         MiembroFamilia miembro = nodo.getMiembro();
         String item = miembro.getNombre() + " " + miembro.getSobrenombre();
-        CajitaDescendencias.addItem(item);
+        
 
         
         Nodo hijo = nodo.getHijo();
@@ -254,6 +318,13 @@ public class PestanasArboles extends javax.swing.JFrame {
         }
     }
     
+    /**
+     * Capitaliza el nombre ingresado.
+     * 
+     * @param nombre el nombre a capitalizar.
+     * @return el nombre capitalizado.
+     * @author Anthony Caldera
+     */
     private String capitalizarNombre(String nombre) {
         String[] partes = nombre.split(" ");
         StringBuilder nombreCapitalizado = new StringBuilder();
@@ -269,12 +340,29 @@ public class PestanasArboles extends javax.swing.JFrame {
         return nombreCapitalizado.toString().trim();
     }
     
+    
+    /**
+     * Obtiene los miembros de la familia por nivel y devuelve una lista.
+     * 
+     * @param nivel el nivel de generación que se desea obtener.
+     * @return una lista de miembros en el nivel especificado.
+     * @author Anthony Caldera
+     */
     public ListaSimple obtenerMiembrosPorNivel(int nivel) {
     ListaSimple listaMiembros = new ListaSimple();
     obtenerMiembrosPorNivelRecursivo(familyTree.getRaiz(), nivel, 0, listaMiembros);
     return listaMiembros;
 }
-
+    
+    /**
+     * Método recursivo que obtiene los miembros por nivel.
+     * 
+     * @param nodo el nodo actual a procesar.
+     * @param nivelDeseado el nivel deseado.
+     * @param nivelActual el nivel actual en la recursión.
+     * @param listaMiembros la lista donde se almacenarán los miembros encontrados.
+     * @author Anthony Caldera
+     */
     private void obtenerMiembrosPorNivelRecursivo(Nodo nodo, int nivelDeseado, int nivelActual, ListaSimple listaMiembros) {
     
     if (nodo == null) {
@@ -295,6 +383,12 @@ public class PestanasArboles extends javax.swing.JFrame {
             
 }
     
+    /**
+     * Muestra los miembros de la generación en un cuadro de diálogo.
+     * 
+     * @param listaMiembros la lista de miembros a mostrar.
+     * @author Anthony Caldera
+     */
     private static void mostrarMiembrosGene(ListaSimple listaMiembros) {
         StringBuilder miembrosText = new StringBuilder("Miembros en el nivel:\n");
 
@@ -327,29 +421,37 @@ public class PestanasArboles extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         MostrarArbolPanel = new javax.swing.JPanel();
-        CajitaMiembros = new javax.swing.JComboBox<>();
-        InformacionBoton = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         Regresar = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         Descendencias = new javax.swing.JPanel();
-        CajitaDescendencias = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         CampoTitulo = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         GeneracionLista = new javax.swing.JComboBox<>();
         jButton4 = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        jLabel12 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        PanelAntePasados = new javax.swing.JPanel();
+        CajitaparaPasados = new javax.swing.JComboBox<>();
+        jButton5 = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(51, 204, 0));
 
-        MostrarArbolPanel.setBackground(new java.awt.Color(255, 204, 204));
+        jTabbedPane1.setBackground(new java.awt.Color(204, 204, 204));
+        jTabbedPane1.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+
+        jPanel1.setBackground(new java.awt.Color(51, 204, 0));
+
+        MostrarArbolPanel.setBackground(new java.awt.Color(153, 153, 153));
 
         javax.swing.GroupLayout MostrarArbolPanelLayout = new javax.swing.GroupLayout(MostrarArbolPanel);
         MostrarArbolPanel.setLayout(MostrarArbolPanelLayout);
@@ -362,17 +464,9 @@ public class PestanasArboles extends javax.swing.JFrame {
             .addGap(0, 548, Short.MAX_VALUE)
         );
 
-        InformacionBoton.setText("Buscar Informacion");
-        InformacionBoton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                InformacionBotonActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Arbol Correspondiente:");
-
         jLabel2.setText("LLENAR");
 
+        Regresar.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         Regresar.setText("Cargar Nuevo Archivo Json");
         Regresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -380,52 +474,50 @@ public class PestanasArboles extends javax.swing.JFrame {
             }
         });
 
+        jLabel9.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setText("Arbol Completo Correspondiente:");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(Regresar))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(MostrarArbolPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(33, 33, 33)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CajitaMiembros, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(InformacionBoton, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
+                            .addComponent(MostrarArbolPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 343, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(Regresar)))
+                        .addGap(0, 191, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(96, 96, 96)
-                .addComponent(CajitaMiembros, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(InformacionBoton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel2)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(MostrarArbolPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(MostrarArbolPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(Regresar)
-                .addGap(26, 26, 26))
+                .addGap(38, 38, 38))
         );
 
         jTabbedPane1.addTab("Arbol Completo", jPanel1);
 
+        jPanel2.setBackground(new java.awt.Color(0, 204, 0));
+
+        jButton1.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         jButton1.setText("Buscar por Nombre");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -439,47 +531,34 @@ public class PestanasArboles extends javax.swing.JFrame {
         Descendencias.setLayout(DescendenciasLayout);
         DescendenciasLayout.setHorizontalGroup(
             DescendenciasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 561, Short.MAX_VALUE)
+            .addGap(0, 674, Short.MAX_VALUE)
         );
         DescendenciasLayout.setVerticalGroup(
             DescendenciasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 518, Short.MAX_VALUE)
         );
 
-        jButton2.setText("Mostrar Informacion");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Busca por nombre dandole al boton");
-
-        jLabel4.setText("Selecciona uno de los miembros para mostrar su informacion");
+        jLabel10.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setText("Busqueda por Nombre: ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(54, 54, 54)
-                .addComponent(Descendencias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(62, 62, 62)
+                .addComponent(Descendencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(51, 51, 51)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(CajitaDescendencias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(87, 87, 87)
-                                .addComponent(jButton1))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(57, 57, 57)
-                                .addComponent(jLabel3))))
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                        .addComponent(jLabel3)
+                        .addGap(46, 46, 46))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(93, 93, 93)
-                        .addComponent(jButton2)))
-                .addGap(38, 38, 38))
+                        .addComponent(jButton1)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -487,30 +566,28 @@ public class PestanasArboles extends javax.swing.JFrame {
                 .addGap(51, 51, 51)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
+                        .addGap(160, 160, 160)
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel4)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(CajitaDescendencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1))
                     .addComponent(Descendencias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Mostrar Arbol por Nombre", jPanel2);
 
+        jPanel3.setBackground(new java.awt.Color(0, 204, 0));
+
+        CampoTitulo.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         CampoTitulo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 CampoTituloActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Ingresa el titulo de algun miembro de la familia:");
-
+        jButton3.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         jButton3.setText("Buscar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -518,14 +595,23 @@ public class PestanasArboles extends javax.swing.JFrame {
             }
         });
 
-        jLabel6.setText("Seleccione alguna generacion para su lista (Por Nivel):");
+        GeneracionLista.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
 
+        jButton4.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         jButton4.setText("Mostrar Generacion");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
+
+        jLabel11.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setText("Ingresa el titulo de algun miembro de la familia");
+
+        jLabel12.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setText("Selecciona alguna generación para su lista (Por Nivel)");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -534,34 +620,110 @@ public class PestanasArboles extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(39, 39, 39)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12)
+                    .addComponent(jLabel11)
                     .addComponent(jButton4)
-                    .addComponent(jButton3)
                     .addComponent(CampoTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(GeneracionLista, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(665, Short.MAX_VALUE))
+                    .addComponent(GeneracionLista, javax.swing.GroupLayout.PREFERRED_SIZE, 284, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(610, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(73, 73, 73)
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
+                .addGap(80, 80, 80)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(CampoTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton3)
-                .addGap(184, 184, 184)
-                .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(190, 190, 190)
+                .addComponent(jLabel12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(GeneracionLista, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jButton4)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Busqueda por Titulo y Lista de Generacion", jPanel3);
+
+        jPanel4.setBackground(new java.awt.Color(0, 204, 0));
+
+        PanelAntePasados.setBackground(new java.awt.Color(102, 102, 102));
+
+        javax.swing.GroupLayout PanelAntePasadosLayout = new javax.swing.GroupLayout(PanelAntePasados);
+        PanelAntePasados.setLayout(PanelAntePasadosLayout);
+        PanelAntePasadosLayout.setHorizontalGroup(
+            PanelAntePasadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 652, Short.MAX_VALUE)
+        );
+        PanelAntePasadosLayout.setVerticalGroup(
+            PanelAntePasadosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 539, Short.MAX_VALUE)
+        );
+
+        CajitaparaPasados.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        CajitaparaPasados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CajitaparaPasadosActionPerformed(evt);
+            }
+        });
+
+        jButton5.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jButton5.setText("Mostrar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Arbol Para los Nntepasados");
+
+        jLabel8.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Muestra sus antepasados:");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(44, 44, 44)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(PanelAntePasados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel8)
+                            .addComponent(CajitaparaPasados, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(51, 51, 51)
+                                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(7, 7, 7)
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(98, 98, 98)
+                        .addComponent(jLabel8)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CajitaparaPasados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton5))
+                    .addComponent(PanelAntePasados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(65, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Mostrar Antepasados", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -574,14 +736,23 @@ public class PestanasArboles extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 672, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 673, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * Maneja el evento de acción del botón para buscar un miembro por nombre.
+     * Se crea una instancia de la clase Genealogia y se llama al método 
+     * para seleccionar un miembro.
+     * 
+     * @param evt el evento de acción generado por el botón.
+     * @author Anthony Caldera
+     */
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         
@@ -597,21 +768,15 @@ public class PestanasArboles extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void InformacionBotonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_InformacionBotonActionPerformed
-        // TODO add your handling code here:
-        
-        String miembrito = CajitaMiembros.getSelectedItem().toString();
-        
-        MiembroFamilia miembre = tablita.buscar(miembrito);
-        
-        familyTree.mostrarInformacionMiembro(miembre);
-        
-        
-        
-        
-        
-    }//GEN-LAST:event_InformacionBotonActionPerformed
-
+    
+    /**
+     * Maneja el evento de acción del botón para regresar a la ventana 
+     * de carga de un nuevo archivo JSON. Se crea una instancia de 
+     * CargarJSON y se establece visible, ocultando la ventana actual.
+     * 
+     * @param evt el evento de acción generado por el botón.
+     * @author Anthony Caldera
+     */
     private void RegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegresarActionPerformed
         // TODO add your handling code here:
         
@@ -627,21 +792,20 @@ public class PestanasArboles extends javax.swing.JFrame {
         
     }//GEN-LAST:event_RegresarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        
-        MiembroFamilia mostrarcito = tablita.buscar(CajitaDescendencias.getSelectedItem().toString());
-        
-        elnuevoarbol.mostrarInformacionMiembro(mostrarcito);
-        
-        
-        
-    }//GEN-LAST:event_jButton2ActionPerformed
-
+    
     private void CampoTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CampoTituloActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_CampoTituloActionPerformed
 
+    
+    /**
+     * Maneja el evento de acción del botón para buscar miembros por título.
+     * Obtiene el texto del campo de título y llama al método para buscar 
+     * por título.
+     * 
+     * @param evt el evento de acción generado por el botón.
+     * @author Anthony Caldera
+     */
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
         String titulito = CampoTitulo.getText();
@@ -649,6 +813,15 @@ public class PestanasArboles extends javax.swing.JFrame {
         buscarPorTitulo(titulito);
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    
+    /**
+     * Maneja el evento de acción del botón para mostrar miembros por nivel.
+     * Obtiene el nivel seleccionado en la lista y llama al método para 
+     * obtener miembros de ese nivel, mostrando los resultados.
+     * 
+     * @param evt el evento de acción generado por el botón.
+     * @author Anthony Caldera
+     */
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
         String rayado = GeneracionLista.getSelectedItem().toString();
@@ -665,6 +838,58 @@ public class PestanasArboles extends javax.swing.JFrame {
         
         
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void CajitaparaPasadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CajitaparaPasadosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CajitaparaPasadosActionPerformed
+
+    
+    /**
+     * Maneja el evento de acción del botón para mostrar los antepasados 
+     * del miembro seleccionado. Crea un nuevo árbol de antepasados y 
+     * lo muestra en el panel correspondiente.
+     * 
+     * @param evt el evento de acción generado por el botón.
+     * @author Anthony Caldera
+     */
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        
+        FamilyTreeBuilder llamada = new FamilyTreeBuilder();
+        
+        
+        
+       
+        
+        String guardar = CajitaparaPasados.getSelectedItem().toString();
+        
+        MiembroFamilia nombrcompleto = tablita.buscar(guardar);
+        
+        String nuevonombre = nombrcompleto.getNombre() + " " + nombrcompleto.getSobrenombre();
+        
+        Nodo elhijodelquequierobuscar = familyTree.buscarNodoEnArbol(familyTree, nuevonombre);
+        
+        Nodo guardarpadre = llamada.ElModificador2(familyTree.getRaiz(), elhijodelquequierobuscar, familyTree);
+        
+        
+       
+        
+        ListaSimpleMiembroFamilia guardar1 = familyTree.CrearListaMiembroFamilia(familyTree, nuevonombre);
+        
+        Tree nuevoarbol2 = familyTree.crearArbolDesdeLista(guardar1);
+        
+        
+        nuevoarbol2.mostrarArbol(PanelAntePasados);
+        
+        
+        
+        
+        
+      
+        
+        
+        
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -703,27 +928,29 @@ public class PestanasArboles extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> CajitaDescendencias;
-    private javax.swing.JComboBox<String> CajitaMiembros;
+    private javax.swing.JComboBox<String> CajitaparaPasados;
     private javax.swing.JTextField CampoTitulo;
     private javax.swing.JPanel Descendencias;
     private javax.swing.JComboBox<String> GeneracionLista;
-    private javax.swing.JButton InformacionBoton;
     private javax.swing.JPanel MostrarArbolPanel;
+    private javax.swing.JPanel PanelAntePasados;
     private javax.swing.JButton Regresar;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,8 +7,10 @@ package arbolgfamilias;
 import javax.swing.JOptionPane;
 
 /**
- *
- * @author dugla
+ * Esta clase representa a un miembro de la familia con varios atributos
+ * que describen sus relaciones y características personales.
+ * 
+ * @author Anthony Caldera
  */
 public class MiembroFamilia { 
     private String nombre;
@@ -23,8 +25,24 @@ public class MiembroFamilia {
     private String colorojos;
     private String colorcabello;
     private String fate;
-    
 
+    /**
+     * Constructor que inicializa un nuevo miembro de la familia.
+     * 
+     * @param nombre el nombre del miembro.
+     * @param sobrenombre el sobrenombre del miembro.
+     * @param padre el nombre del padre.
+     * @param madre el nombre de la madre.
+     * @param mote el mote del miembro.
+     * @param titulonobilario el título nobiliario del miembro.
+     * @param esposa el nombre de la esposa.
+     * @param colorojos el color de ojos del miembro.
+     * @param colorcabello el color de cabello del miembro.
+     * @param hijos la lista de hijos del miembro.
+     * @param notes notas adicionales sobre el miembro.
+     * @param fate el destino del miembro.
+     * @author Anthony Caldera
+     */
     public MiembroFamilia(String nombre, String sobrenombre, String padre, String madre, String mote, String titulonobilario, String esposa, String colorojos, String colorcabello, ListaSimple hijos, String notes, String fate) {
         this.nombre = nombre;
         this.sobrenombre = sobrenombre;
@@ -38,200 +56,207 @@ public class MiembroFamilia {
         this.colorojos = colorojos;
         this.colorcabello = colorcabello;
         this.fate = fate;
-        
     }
-    
-    
-    public void mostrarInformacionMiembro(MiembroFamilia miembro) {
-        String hijos = miembro.getHijos().impresora();
-        String info = "Nombre: " + miembro.getNombre() + "\n" +
-                      "Sobrenombre: " + miembro.getSobrenombre() + "\n" +
-                      "Padre: " + miembro.getPadre() + "\n" +
-                      "Madre: " + miembro.getMadre() + "\n" +
-                      "Mote: " + miembro.getMote() + "\n" +
-                      "Esposa: " + miembro.getEsposa() + "\n" +
-                      "Título Nobilario: " + miembro.getTitulonobilario() + "\n" +
-                      "Notas: " + miembro.getNotes() + "\n" +
-                      "Color de Ojos: " + miembro.getColorojos() + "\n" +
-                      "Color de Cabello: " + miembro.getColorcabello() + "\n" +
-                      "Destino: " + miembro.getFate() + "\n" +
-                      "Hijos: " + hijos;
 
-        JOptionPane.showMessageDialog(null, info, "Información del Miembro", JOptionPane.INFORMATION_MESSAGE);
-    }
-    
-    
-    
+    /**
+     * Agrega un hijo a la lista de hijos del miembro.
+     * 
+     * @param hijo el nombre del hijo a agregar.
+     * @author Anthony Caldera
+     */
     public void agregarHijo(String hijo) {
         hijos.agregar(hijo); 
     }
 
     /**
-     * @return the nombre
+     * @return el nombre del miembro.
+     * @author Anthony Caldera
      */
     public String getNombre() {
         return nombre;
     }
 
     /**
-     * @param nombre the nombre to set
+     * @param nombre el nombre a establecer.
+     * @author Anthony Caldera
      */
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
     /**
-     * @return the padre
+     * @return el nombre del padre.
+     * @author Anthony Caldera
      */
     public String getPadre() {
         return padre;
     }
 
     /**
-     * @param padre the padre to set
+     * @param padre el nombre del padre a establecer.
+     * @author Anthony Caldera
      */
     public void setPadre(String padre) {
         this.padre = padre;
     }
 
     /**
-     * @return the madre
+     * @return el nombre de la madre.
+     * @author Anthony Caldera
      */
     public String getMadre() {
         return madre;
     }
 
     /**
-     * @param madre the madre to set
+     * @param madre el nombre de la madre a establecer.
+     * @author Anthony Caldera
      */
     public void setMadre(String madre) {
         this.madre = madre;
     }
 
     /**
-     * @return the hijos
+     * @return la lista de hijos del miembro.
+     * @author Anthony Caldera
      */
     public ListaSimple getHijos() {
         return hijos;
     }
 
     /**
-     * @param hijos the hijos to set
+     * @param hijos la lista de hijos a establecer.
+     * @author Anthony Caldera
      */
     public void setHijos(ListaSimple hijos) {
         this.hijos = hijos;
     }
 
     /**
-     * @return the mote
+     * @return el mote del miembro.
+     * @author Anthony Caldera
      */
     public String getMote() {
         return mote;
     }
 
     /**
-     * @param mote the mote to set
+     * @param mote el mote a establecer.
+     * @author Anthony Caldera
      */
     public void setMote(String mote) {
         this.mote = mote;
     }
 
     /**
-     * @return the esposa
+     * @return el nombre de la esposa.
+     * @author Anthony Caldera
      */
     public String getEsposa() {
         return esposa;
     }
 
     /**
-     * @param esposa the esposa to set
+     * @param esposa el nombre de la esposa a establecer.
+     * @author Anthony Caldera
      */
     public void setEsposa(String esposa) {
         this.esposa = esposa;
     }
 
     /**
-     * @return the titulonobilario
+     * @return el título nobiliario del miembro.
+     * @author Anthony Caldera
      */
     public String getTitulonobilario() {
         return titulonobilario;
     }
 
     /**
-     * @param titulonobilario the titulonobilario to set
+     * @param titulonobilario el título nobiliario a establecer.
+     * @author Anthony Caldera
      */
     public void setTitulonobilario(String titulonobilario) {
         this.titulonobilario = titulonobilario;
     }
 
     /**
-     * @return the notes
+     * @return las notas sobre el miembro.
+     * @author Anthony Caldera
      */
     public String getNotes() {
         return notes;
     }
 
     /**
-     * @param notes the notes to set
+     * @param notes las notas a establecer.
+     * @author Anthony Caldera
      */
     public void setNotes(String notes) {
         this.notes = notes;
     }
 
     /**
-     * @return the colorojos
+     * @return el color de ojos del miembro.
+     * @author Anthony Caldera
      */
     public String getColorojos() {
         return colorojos;
     }
 
     /**
-     * @param colorojos the colorojos to set
+     * @param colorojos el color de ojos a establecer.
+     * @author Anthony Caldera
      */
     public void setColorojos(String colorojos) {
         this.colorojos = colorojos;
     }
 
     /**
-     * @return the colorcabello
+     * @return el color de cabello del miembro.
+     * @author Anthony Caldera
      */
     public String getColorcabello() {
         return colorcabello;
     }
 
     /**
-     * @param colorcabello the colorcabello to set
+     * @param colorcabello el color de cabello a establecer.
+     * @author Anthony Caldera
      */
     public void setColorcabello(String colorcabello) {
         this.colorcabello = colorcabello;
     }
 
     /**
-     * @return the fate
+     * @return el destino del miembro.
+     * @author Anthony Caldera
      */
     public String getFate() {
         return fate;
     }
 
     /**
-     * @param fate the fate to set
+     * @param fate el destino a establecer.
+     * @author Anthony Caldera
      */
     public void setFate(String fate) {
         this.fate = fate;
     }
 
     /**
-     * @return the sobrenombre
+     * @return el sobrenombre del miembro.
+     * @author Anthony Caldera
      */
     public String getSobrenombre() {
         return sobrenombre;
     }
 
     /**
-     * @param sobrenombre the sobrenombre to set
+     * @param sobrenombre el sobrenombre a establecer.
+     * @author Anthony Caldera
      */
     public void setSobrenombre(String sobrenombre) {
         this.sobrenombre = sobrenombre;
     }
- 
 }

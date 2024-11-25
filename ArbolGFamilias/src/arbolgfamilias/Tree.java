@@ -22,6 +22,8 @@ import org.graphstream.ui.swing_viewer.SwingViewer;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.*;
 import org.graphstream.graph.Graph;
 import org.graphstream.graph.Node;
@@ -32,8 +34,10 @@ import org.graphstream.ui.view.ViewerPipe;
 import org.graphstream.ui.view.ViewerListener;
 
 /**
- *
- * @author dugla
+ * Clase que representa un árbol genealógico.
+ * Permite insertar miembros, mostrar el árbol y gestionar eventos de visualización.
+ * 
+ * @author Anthony Caldera
  */
 public class Tree implements ViewerListener {
     
@@ -45,6 +49,14 @@ public class Tree implements ViewerListener {
     private String datito;
     
     
+        
+    
+    
+    /**
+     * Constructor que inicializa el árbol con la raíz en null.
+     * 
+     * @author Francisco Fustero
+     */
 
     public Tree() {
         this.raiz = null;
@@ -53,22 +65,46 @@ public class Tree implements ViewerListener {
     }
     
     
-    public void enviardatito(String datito) {
-      this.datito = datito;
-    }
+    /**
+     * Establece la tabla hash asociada al árbol.
+     * 
+     * @param hashTable la tabla hash a establecer.
+     * @author Francisco Fustero
+     */
     
     public void setHashTable(Hash_Table hashTable) {
         this.hashTable = hashTable;
     }
 
+    
+    /**
+     * Obtiene la raíz del árbol.
+     * 
+     * @return la raíz del árbol.
+     * @author Francisco Fustero
+     */
     public Nodo getRoot() {
         return raiz;
     }
     
+    
+    /**
+     * Verifica si el árbol está vacío.
+     * 
+     * @return true si el árbol está vacío, false en caso contrario.
+     * @author Anthony Caldera
+     */
     public boolean isEmpty() {
         return raiz == null; 
     }
     
+    /**
+     * Inserta un nuevo miembro en el árbol bajo un nodo padre.
+     * 
+     * @param miembro el miembro a insertar.
+     * @param parent el nodo padre donde se insertará.
+     * @author Francisco Fustero
+     */
     public void insert(MiembroFamilia miembro, Nodo parent){
         Nodo newNode = new Nodo(miembro);
         if (!isEmpty()){
@@ -77,12 +113,26 @@ public class Tree implements ViewerListener {
         
     }
     
+
+    /**
+     * Crea la raíz del árbol con un nuevo miembro.
+     * 
+     * @param miembro el miembro que se convertirá en la raíz.
+     * @author Anthony Caldera
+     */
     
     public void CrearRaiz(MiembroFamilia miembro){
         Nodo newNode = new Nodo(miembro);
         setRaiz(newNode);    
     }
 
+    /**
+     * Agrega un hijo a un nodo padre en el árbol.
+     * 
+     * @param padre el nodo padre.
+     * @param hijo el nodo hijo a agregar.
+     * @author Francisco Fustero
+     */
     public void agregarHijo(Nodo padre, Nodo hijo) {
     if (padre.getHijo() == null) {
         padre.setHijo(hijo);
@@ -96,36 +146,16 @@ public class Tree implements ViewerListener {
     
 }
     
-    public void mostrarArbolrecuperado() {
-    Graph graph = new SingleGraph("Árbol Familiar");
-    graph.setAttribute("ui.stylesheet", "node {size: 28px; fill-color: lightblue; text-alignment: center;} " +
-                                        "edge {arrow-shape: arrow; arrow-size: 15px, 5px;}");
-    agregarNodosYEnlaces(graph, this.raiz, true);
-
-    JFrame frame = new JFrame("Árbol Familiar");
-    frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-    frame.setSize(1280, 720);
-
-    SwingViewer viewer = new SwingViewer(graph, SwingViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
-    viewer.enableAutoLayout();
-
-    ViewerPipe pipe = viewer.newViewerPipe();
-    pipe.addViewerListener(this);
-    
-    
-
-    JPanel panel = (JPanel) viewer.addDefaultView(false);
-    frame.add(panel, BorderLayout.CENTER);
-
-    frame.setVisible(true);
-    frame.setLocationRelativeTo(null);
-    
-
-    viewer.setCloseFramePolicy(Viewer.CloseFramePolicy.HIDE_ONLY);
-}
     
 
 
+    
+    /**
+     * Muestra el árbol en un panel específico.
+     * 
+     * @param panelDestino el panel donde se mostrará el árbol.
+     * @author Anthony Caldera
+     */
     public void mostrarArbol(JPanel panelDestino) {
     
     Graph graph = new SingleGraph("Árbol Familiar");
@@ -140,25 +170,39 @@ public class Tree implements ViewerListener {
    
     SwingViewer viewer = new SwingViewer(graph, SwingViewer.ThreadingModel.GRAPH_IN_ANOTHER_THREAD);
     viewer.enableAutoLayout(); 
-
+    
     
     ViewPanel viewPanel = (ViewPanel) viewer.addDefaultView(false);
-
-    
+       
+  
     viewPanel.setPreferredSize(new Dimension(panelDestino.getWidth(), panelDestino.getHeight()));
     viewPanel.setSize(panelDestino.getSize());
     viewPanel.setMinimumSize(panelDestino.getSize());
     
     
+    
+    ViewerPipe parabotones;
 
     
     panelDestino.setLayout(new BorderLayout());
     panelDestino.removeAll(); 
     panelDestino.add(viewPanel, BorderLayout.CENTER); 
     panelDestino.revalidate(); 
-    panelDestino.repaint(); 
-
+    panelDestino.repaint();
     
+    parabotones = viewer.newViewerPipe();
+    parabotones.addViewerListener(this);
+    
+    new Thread(() -> {
+            while(true) {
+                try {
+                    parabotones.pump();
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    break;
+                }
+            }
+        }).start();
 
 
 }
@@ -168,23 +212,36 @@ public class Tree implements ViewerListener {
     public void buttonPushed(String id) {
 
         handleNodeClick(id);
+        System.out.println(id);
         System.out.println("funciona el click");
 
     }
     
+    /**
+     * Maneja el evento de clic en un nodo.
+     * 
+     * @param nodeId el ID del nodo que fue clickeado.
+     * @author Francisco Fustero
+     */
+    
     private void handleNodeClick(String nodeId) {
-        if (hashTable != null) {
-            MiembroFamilia miembro = hashTable.buscar(nodeId);
+        
+            Hash_Table tablita = GlobalData.getHashTable();
+            MiembroFamilia miembro = tablita.buscar(nodeId);
             if (miembro != null) {
-                JOptionPane.showMessageDialog(null, "Miembro encontrado: " + miembro.getNombre() + " " + miembro.getSobrenombre());
                 mostrarInformacionMiembro(miembro);
             } else {
                 JOptionPane.showMessageDialog(null, "Miembro no encontrado");
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Tabla hash no inicializada");
-        }
+        
     }
+    
+    /**
+     * Muestra la información de un miembro en un cuadro de diálogo.
+     * 
+     * @param miembro el miembro cuya información se mostrará.
+     * @author Anthony Caldera
+     */
     
     public void mostrarInformacionMiembro(MiembroFamilia miembro) {
         String hijos = miembro.getHijos().impresora();
@@ -208,6 +265,15 @@ public class Tree implements ViewerListener {
 
 
  
+    
+    /**
+     * Agrega nodos y enlaces al gráfico del árbol.
+     * 
+     * @param graph el gráfico al que se agregarán los nodos y enlaces.
+     * @param nodo el nodo actual a procesar.
+     * @param esRaiz indica si el nodo es la raíz.
+     * @author Anthony Caldera
+     */
     private void agregarNodosYEnlaces(Graph graph, Nodo nodo, boolean esRaiz) {
     if (nodo == null) return;
 
@@ -223,11 +289,13 @@ public class Tree implements ViewerListener {
             graph.getNode(nodeId).setAttribute("ui.style", "fill-color: green;");
         } else {
             graph.getNode(nodeId).setAttribute("ui.style", "fill-color: lightblue;");
+            
         }
     } else {
         System.out.println("Nodo con ID " + nodeId + " ya existe.");
         return; 
     }
+    
 
     Nodo hijo = nodo.getHijo();
     while (hijo != null) {
@@ -255,12 +323,18 @@ public class Tree implements ViewerListener {
     }
 }
 
-    
+
     
 
 
 
-    
+    /**
+     * Realiza un recorrido en preorden del árbol.
+     * 
+     * @param root la raíz del árbol a recorrer.
+     * @return una cadena con los nombres de los miembros en preorden.
+     * @author Francisco Fustero
+     */
     public String preorder(Nodo root){
         String toPrint = "";
         if (root != null){
@@ -272,13 +346,23 @@ public class Tree implements ViewerListener {
         return toPrint;
     }
 
+    
+    /**
+     * Establece la raíz del árbol.
+     * 
+     * @param raiz el nodo raíz a establecer.
+     * @author Anthony Caldera
+     */
 
     public void setRaiz(Nodo raiz) {
         this.raiz = raiz;
     }
 
     /**
-     * @return the raiz
+     * Obtiene la raíz del árbol.
+     * 
+     * @return la raíz del árbol.
+     * @author Francisco Fustero
      */
     public Nodo getRaiz() {
         return raiz;
@@ -313,16 +397,37 @@ public class Tree implements ViewerListener {
     }
     
     
-    
+    /**
+     * Vacía un nodo.
+     * 
+     * @param aux el nodo a vaciar.
+     * @author Francisco Fustero
+     */
     public void vaciar(Nodo aux) {
         aux = null;
     }
+    
+    /**
+     * Verifica si el árbol o su raíz están vacíos.
+     * 
+     * @return true si el árbol o su raíz están vacíos, false en caso contrario.
+     * @author Anthony Caldera
+     */
     
     public boolean isEmpty1() {
         return raiz == null || raiz.getHijo() == null;
     }
     
     
+    
+    /**
+     * Crea un árbol de descendencia a partir de un miembro específico.
+     * 
+     * @param arbolOriginal el árbol original.
+     * @param nombreMiembro el miembro del cual se creará el árbol de descendencia.
+     * @return un nuevo árbol de descendencia.
+     * @author Francisco Fustero
+     */
     public Tree crearArbolDescendencia(Tree arbolOriginal, MiembroFamilia nombreMiembro) {
     Tree descendenciaTree = new Tree();
     Nodo miembroNodo = buscarMiembro(arbolOriginal.getRaiz(), nombreMiembro); 
@@ -351,7 +456,16 @@ public class Tree implements ViewerListener {
     return descendenciaTree;
 }
 
-private void copiarDescendencia(Nodo nodoNuevo, Nodo nodoOriginal) {
+    
+    
+    /**
+     * Copia la descendencia de un nodo original a un nuevo nodo.
+     * 
+     * @param nodoNuevo el nodo nuevo donde se copiará la descendencia.
+     * @param nodoOriginal el nodo original del cual se copiará la descendencia.
+     * @author Anthony Caldera
+     */
+    private void copiarDescendencia(Nodo nodoNuevo, Nodo nodoOriginal) {
     
     Nodo hijoActual = nodoOriginal.getHijo();
 
@@ -384,7 +498,15 @@ private void copiarDescendencia(Nodo nodoNuevo, Nodo nodoOriginal) {
 }
 
 
-private Nodo buscarMiembro(Nodo currentNode, MiembroFamilia nombreMiembro) {
+    /**
+     * Busca un miembro en el árbol.
+     * 
+     * @param currentNode el nodo actual a procesar.
+     * @param nombreMiembro el miembro a buscar.
+     * @return el nodo del miembro encontrado, o null si no se encuentra.
+     * @author Francisco Fustero
+     */
+    private Nodo buscarMiembro(Nodo currentNode, MiembroFamilia nombreMiembro) {
     if (currentNode == null) {
         return null; 
     }
@@ -408,14 +530,29 @@ private Nodo buscarMiembro(Nodo currentNode, MiembroFamilia nombreMiembro) {
     return null;
 }
 
-public int calcularNiveles() {
-    return calcularNivelesRecursivo(raiz);
-}
-
-private int calcularNivelesRecursivo(Nodo nodo) {
-    if (nodo == null) {
-        return 0; 
+    
+    /**
+     * Calcula el número de niveles en el árbol.
+     * 
+     * @return el número de niveles en el árbol.
+     * @author Anthony Caldera
+     */
+    public int calcularNiveles() {
+        return calcularNivelesRecursivo(raiz);
     }
+
+    
+    /**
+     * Método recursivo para calcular los niveles en el árbol.
+     * 
+     * @param nodo el nodo actual a procesar.
+     * @return el número máximo de niveles desde el nodo actual.
+     * @author Francisco Fustero
+     */
+    private int calcularNivelesRecursivo(Nodo nodo) {
+        if (nodo == null) {
+            return 0; 
+        }
 
     int maxNivelHijos = 0;
     Nodo hijo = nodo.getHijo();
@@ -430,14 +567,149 @@ private int calcularNivelesRecursivo(Nodo nodo) {
     return maxNivelHijos + 1; 
 }
 
-public void llenarComboBox(JComboBox comboBox) {
-    int niveles = calcularNiveles();
-    comboBox.removeAllItems(); 
-    for (int i = 0; i < niveles; i++) {
-        String a = String.valueOf(i);
-        comboBox.addItem(a);  
+    
+    /**
+     * Llena un JComboBox con los niveles del árbol.
+     * 
+     * @param comboBox el JComboBox a llenar.
+     * @author Anthony Caldera
+     */
+    public void llenarComboBox(JComboBox comboBox) {
+        int niveles = calcularNiveles();
+        comboBox.removeAllItems(); 
+        for (int i = 0; i < niveles; i++) {
+            String a = String.valueOf(i);
+            comboBox.addItem(a);  
+        }
     }
-}
+
+
+    /**
+     * Busca un nodo en el árbol por el nombre del miembro.
+     * 
+     * @param arbol el árbol donde se realizará la búsqueda.
+     * @param nombreMiembro el nombre del miembro a buscar.
+     * @return el nodo encontrado o null si no se encuentra.
+     * @author Francisco Fustero
+     */
+    public Nodo buscarNodoEnArbol(Tree arbol, String nombreMiembro) {
+        return buscarNodoRecursivo(arbol.getRaiz(), nombreMiembro);
+    }
+
+    
+    /**
+     * Método recursivo para buscar un nodo en el árbol.
+     * 
+     * @param nodoActual el nodo actual a procesar.
+     * @param nombreMiembro el nombre del miembro a buscar.
+     * @return el nodo encontrado o null si no se encuentra.
+     * @author Anthony Caldera
+     */
+    private Nodo buscarNodoRecursivo(Nodo nodoActual, String nombreMiembro) {
+        if (nodoActual == null) {
+            return null;
+        }
+
+        MiembroFamilia miembroActual = nodoActual.getMiembro();
+        String revisar = miembroActual.getNombre() + " " + miembroActual.getSobrenombre();
+
+
+        if (revisar.equals(nombreMiembro)) {
+            System.out.println("se encontro: " + (miembroActual.getNombre() + " " + miembroActual.getSobrenombre() == nombreMiembro));
+            return nodoActual;
+        }
+
+        Nodo hijo = nodoActual.getHijo();
+        while (hijo != null) {
+            Nodo nodoEncontrado = buscarNodoRecursivo(hijo, nombreMiembro);
+            if (nodoEncontrado != null) {
+                return nodoEncontrado;
+            }
+            hijo = hijo.getHermano();
+        }
+
+
+
+        return null;
+    }
+
+    
+    /**
+     * Crea una lista de miembros de familia a partir del árbol.
+     * 
+     * @param arbolito el árbol del cual se creará la lista.
+     * @param nombremiembro el nombre del miembro a buscar.
+     * @return una lista de miembros de familia.
+     * @author Francisco Fustero
+     */
+    public ListaSimpleMiembroFamilia CrearListaMiembroFamilia(Tree arbolito, String nombremiembro){
+
+        FamilyTreeBuilder pa = new FamilyTreeBuilder();
+        ListaSimpleMiembroFamilia nuevalista = new ListaSimpleMiembroFamilia();
+
+
+        Nodo guardar = arbolito.buscarNodoEnArbol(arbolito, nombremiembro);
+        MiembroFamilia miembroguardar = guardar.getMiembro();
+
+        nuevalista.AgregarAlinicio(miembroguardar);
+        while(guardar != null){
+
+
+
+        Nodo padrenuestro = pa.ElModificador2(arbolito.getRaiz(), guardar, arbolito);
+        if(padrenuestro != null){
+        MiembroFamilia aux = padrenuestro.getMiembro();
+        nuevalista.AgregarAlinicio(aux);
+        }
+        guardar = padrenuestro;
+        }
+        return nuevalista;
+
+
+
+    }
+
+
+
+    
+    /**
+     * Crea un árbol a partir de una lista de miembros de familia.
+     * 
+     * @param lista la lista de miembros de familia a partir de la cual se creará el árbol.
+     * @return un nuevo árbol creado a partir de la lista.
+     * @author Anthony Caldera
+     */
+    public Tree crearArbolDesdeLista(ListaSimpleMiembroFamilia lista) {
+        Tree nuevoArbol = new Tree(); 
+
+        if (lista == null || lista.getCabeza() == null) {
+            return nuevoArbol; 
+        }
+
+        NodosListaSimpleMiembroFamilia actual = lista.getCabeza();
+        MiembroFamilia primerMiembro = actual.getMiembross();
+
+
+        nuevoArbol.CrearRaiz(primerMiembro);
+
+        Nodo nodoActual = nuevoArbol.getRaiz(); 
+
+
+        while (actual.getPnext() != null) {
+            actual = actual.getPnext(); 
+            MiembroFamilia nuevoMiembro = actual.getMiembross();
+
+            Nodo nuevoNodo = new Nodo(nuevoMiembro); 
+            nuevoArbol.agregarHijo(nodoActual, nuevoNodo); 
+            nodoActual = nuevoNodo; 
+        }
+
+        return nuevoArbol; 
+    }
+
+
+
+
 
 }
 

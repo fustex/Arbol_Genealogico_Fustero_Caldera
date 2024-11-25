@@ -19,10 +19,13 @@ import org.graphstream.ui.view.ViewerPipe;
 
 import javax.swing.*;
 import org.graphstream.graph.Graph;
+import org.json.JSONException;
 
 /**
- *
- * @author dugla
+ * Clase que representa una ventana para cargar archivos JSON en la aplicación.
+ * Permite al usuario seleccionar un archivo JSON y visualizar su contenido.
+ * 
+ * @author Anthony Caldera
  */
 public class CargarJSON extends javax.swing.JFrame {
     
@@ -37,6 +40,14 @@ public class CargarJSON extends javax.swing.JFrame {
         BSiguienteVentana.setEnabled(false);
         MostrarJSON.setEditable(false);
     }
+    
+      /**
+     * Obtiene la extensión del archivo.
+     * 
+     * @param file el archivo del cual se desea obtener la extensión.
+     * @return la extensión del archivo como una cadena.
+     * @author Anthony Caldera
+     */
     
     private static String getFileExtension(File file) {
         String name = file.getName();
@@ -68,13 +79,17 @@ public class CargarJSON extends javax.swing.JFrame {
         MostrarJSON = new javax.swing.JTextArea();
         BCargarJSON = new javax.swing.JButton();
         BSiguienteVentana = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setBackground(new java.awt.Color(0, 204, 0));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setText("Bienvenido a tu cargador de archivos");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, -1));
+        jLabel1.setFont(new java.awt.Font("Bauhaus 93", 0, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("El area blanca es iterativo, no modificable.");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 440, -1));
 
         MostrarJSON.setColumns(20);
         MostrarJSON.setRows(5);
@@ -82,6 +97,7 @@ public class CargarJSON extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 140, 610, 250));
 
+        BCargarJSON.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         BCargarJSON.setText("Cargar Archivo JSON");
         BCargarJSON.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,13 +106,19 @@ public class CargarJSON extends javax.swing.JFrame {
         });
         jPanel1.add(BCargarJSON, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 400, -1, -1));
 
+        BSiguienteVentana.setFont(new java.awt.Font("Bauhaus 93", 0, 14)); // NOI18N
         BSiguienteVentana.setText("Siguiente");
         BSiguienteVentana.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BSiguienteVentanaActionPerformed(evt);
             }
         });
-        jPanel1.add(BSiguienteVentana, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 400, -1, -1));
+        jPanel1.add(BSiguienteVentana, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 400, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Bauhaus 93", 0, 24)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Arbol Genealogico de la mano del Rey");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 40, 440, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -118,6 +140,13 @@ public class CargarJSON extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+        /**
+     * Acción que se ejecuta al presionar el botón para cargar un archivo JSON.
+     * Permite al usuario seleccionar un archivo y muestra su contenido en la interfaz.
+     * 
+     * @param evt el evento de acción
+     * @author Anthony Caldera
+     */
     private void BCargarJSONActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCargarJSONActionPerformed
         // TODO add your handling code here:
         JFileChooser fileChooser = new JFileChooser();
@@ -168,10 +197,21 @@ public class CargarJSON extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BCargarJSONActionPerformed
 
+    
+    /**
+     * Acción que se ejecuta al presionar el botón "Siguiente".
+     * Procesa el contenido del JSON cargado y navega a la siguiente ventana.
+     * 
+     * @param evt el evento de acción.
+     * @author Anthony Caldera
+     */
     private void BSiguienteVentanaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSiguienteVentanaActionPerformed
         // TODO add your handling code here:
+        
+        try{
+        
         String guardarArbol = MostrarJSON.getText();
-        JOptionPane.showMessageDialog(rootPane, "Bienvenido, pasemos a la siguiente ventana");
+        
         
         FamilyTreeBuilder builder = new FamilyTreeBuilder();
         
@@ -188,6 +228,11 @@ public class CargarJSON extends javax.swing.JFrame {
         abrir2.setVisible(true);
         
         this.dispose();
+        
+        }catch(JSONException e){
+            
+            JOptionPane.showMessageDialog(rootPane, "Error, verifica el formato");
+        }
         
         
         
@@ -242,6 +287,7 @@ public class CargarJSON extends javax.swing.JFrame {
     private javax.swing.JButton BSiguienteVentana;
     private javax.swing.JTextArea MostrarJSON;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

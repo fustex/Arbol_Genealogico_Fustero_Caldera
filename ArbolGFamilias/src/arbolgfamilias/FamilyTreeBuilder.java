@@ -52,7 +52,7 @@ public class FamilyTreeBuilder {
             JSONArray attributes = member.getJSONArray(memberName);
             MiembroFamilia newMember = createMember(memberName, attributes);
             Nodo hijoNodo = new Nodo(newMember);
-            // Llamar a ElModificador para establecer las relaciones
+            
             ElModificador(familyTree.getRoot(), hijoNodo, familyTree, tabla_hash);
             tabla_hash.insertar(newMember.getNombre() + " " + newMember.getSobrenombre(), newMember);
         }
@@ -86,6 +86,27 @@ public class FamilyTreeBuilder {
     }
     
 }
+    
+    public Nodo ElModificador2(Nodo padre, Nodo hijo, Tree familyTree) {
+    String elPapa = hijo.getMiembro().getPadre();
+    String nombreCompletoPadre = padre.getMiembro().getNombre() + ", " + padre.getMiembro().getSobrenombre() + " of his name";
+
+    if (padre.getMiembro().getNombre().equals(elPapa) || padre.getMiembro().getMote().equals(elPapa) || nombreCompletoPadre.equals(elPapa)) {
+        return padre; 
+    } else {
+        Nodo hijoActual = padre.getHijo();
+        while (hijoActual != null) {
+            Nodo nodoPadreEncontrado = ElModificador2(hijoActual, hijo, familyTree);
+            if (nodoPadreEncontrado != null) {
+                return nodoPadreEncontrado; 
+            }
+            hijoActual = hijoActual.getHermano();
+        }
+    }
+
+    return null; 
+}
+
 
 
     private MiembroFamilia createMember(String memberName, JSONArray attributes) {
